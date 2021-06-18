@@ -36,22 +36,6 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
-  // Override default apollo link
-  // note: don't override httpLink here, specify httpLink options in the
-  // httpLinkOptions property of defaultOptions.
-  // link: myLink
-
-  // Override default cache
-  // cache: myCache
-
-  // Override the way the Authorization header is set
-  // getAuth: (tokenName) => ...
-
-  // Additional ApolloClient options
-  // apollo: { ... }
-
-  // Client local data (see apollo-link-state)
-  // clientState: { resolvers: { ... }, defaults: { ... } }
   getAuth: tokenName => {
     // get the authentication token from local storage if it exists
     // return the headers to the context so httpLink can read them

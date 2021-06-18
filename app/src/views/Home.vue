@@ -23,6 +23,13 @@
         <div v-for="a in article" :key="a.id">
           {{a.id}}. {{ a.title }}
         </div> 
+        <div v-if="article">
+          <p>no articles found </p>
+          <p>please write your article</p>
+          <p>{{userid}}</p>
+          <input v-model="myarticle">
+          <button  @click.prevent="savedata">save your info</button>
+        </div>
       </div>
     </div>
 
@@ -36,9 +43,29 @@ import gql from 'graphql-tag'
 export default {
   name: "home",
   methods: {
+        savedata(myarticle,userid)
+    {
+       this.$apollo.mutate({
+              mutation: gql`mutation createArticle($myarticle: String!,$userid: String!){
+                insert_article_one(title: $myarticle,user_id: $userid) {
+                  id,
+                  title,
+                  user_id
+                  }
+              }`,
+              variables:{
+                myarticle,
+                userid,
+              }
+       })
+    
+    
+  },
     handleLoginEvent(data) {
       this.isAuthenticated = data.loggedIn;
-      console.log(data,'=============')
+      this.userid = data.profile.sub;
+
+      console.log(this.userid,'=============')
       this.isLoading = false;
     }
   },
@@ -50,6 +77,8 @@ export default {
   },
   data() {
     return {
+      myarticle:"",
+      userid:"",
       isAuthenticated: false,
       isLoading: true
     };
@@ -62,6 +91,7 @@ export default {
         title
       }
     }`,
+
   },
 };
 </script>
